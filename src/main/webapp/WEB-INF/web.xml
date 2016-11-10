@@ -14,7 +14,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class> 
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>com.mycompany.ca_service</param-value> 
+            <param-value>com.mycompany.banking_webservice</param-value> 
         </init-param>
     </servlet> 
     <servlet-mapping>
