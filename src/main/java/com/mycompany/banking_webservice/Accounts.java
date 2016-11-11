@@ -59,4 +59,28 @@ public class Accounts {
 
         return Response.status(Response.Status.CREATED).entity(accounts.addAccount(cust_id, sort_code)).build();
     }
+          
+    @POST
+    @Path("/{type}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response transa(String entity, @PathParam("type") String type) {    
+        JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
+      
+        int cust_id = obj.get("cust_id").getAsInt();
+        int account_no = obj.get("account_no").getAsInt();
+        int amount = obj.get("amount").getAsInt();
+        
+        if(type.equalsIgnoreCase("withdrawal")){
+            return Response.status(Response.Status.OK).entity(accounts.withdrawal(cust_id, account_no, amount)).build();
+        }else if(type.equalsIgnoreCase("lodgement")){
+            return Response.status(Response.Status.OK).entity(accounts.lodgement(cust_id, account_no, amount)).build();
+        }else if(type.equalsIgnoreCase("transfer")){
+            int cust_to = obj.get("cust_id_to").getAsInt();
+            int account_to = obj.get("account_no_to").getAsInt();
+            return Response.status(Response.Status.OK).entity(accounts.transfer(cust_to, account_to, cust_id, account_no, amount)).build();
+        }else {
+           return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }  
 }

@@ -79,7 +79,51 @@ public class AccountsService {
         Account a = new Account(no,cust_id,0,sort_code);
         accounts.add(a);
          
-         
-         return gson.toJson(a);
+        return gson.toJson(a);
      }
+
+    public String withdrawal(int cust_id, int account_no, int amount) {
+        Gson gson = new GsonBuilder().create();
+        Account a = transaction(cust_id,account_no, amount, 0);
+        return gson.toJson(a);
+    }
+    
+    public String lodgement(int cust_id, int account_no, int amount) {
+        Gson gson = new GsonBuilder().create();
+        Account a = transaction(cust_id,account_no, amount, 1);
+        return gson.toJson(a);
+    }
+    
+    public String transfer(int cust_to, int account_to, int cust_from, int account_from, int amount) {
+        Gson gson = new GsonBuilder().create();
+        ArrayList<Account> transfer = new ArrayList<>();
+        Account out = transaction(cust_from,account_from, amount, 0);
+        Account in = transaction(cust_to,account_to, amount, 1);
+        transfer.add(out);
+        transfer.add(in);
+        return gson.toJson(transfer);
+    }
+    
+    public Account transaction(int cust_id, int account_no, int amount, int type){
+         Account a = new Account();
+         
+         for(Account x: accounts){
+             if(x.getCid() == cust_id && x.getAccount_no() == account_no){
+                 a = x;
+                 accounts.remove(x);
+                 break;
+             }
+         }
+         
+         int currBalance = a.getBalance();
+         int newBalance = currBalance;
+         if(type == 0){
+            newBalance = currBalance - amount;
+         }else if(type==1){
+           newBalance = currBalance + amount;
+         }
+         a.setBalance(newBalance);
+         accounts.add(a);
+         return a;
+    }
 }

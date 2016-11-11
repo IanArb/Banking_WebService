@@ -79,6 +79,7 @@ public class CustomerService {
             if(x.getCust_id() == id){
                 p = x;
                 people.remove(x);
+                break;
             }
         }
         p.setAddress(address);
