@@ -20,6 +20,18 @@ public class Person {
         this.email = email;
         this.phone = phone;
     }
+    
+    public Person(String name, String address, String email, String phone) {
+        this.cust_id = -1;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+    }
+    
+    public Person() {
+
+    }
 
     public String getName() {
         return name;

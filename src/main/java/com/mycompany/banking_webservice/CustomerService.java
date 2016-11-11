@@ -44,28 +44,42 @@ public class CustomerService {
         return gson.toJson(people);
     }
    
-//    
-//    public Person deleteUser(int id){
-//        Person removed = people.remove(id);
-//        return removed;
-//    }
-//    
-//    public String addUser(String name,int age){
-//        Gson gson = new GsonBuilder().create();
-//        Person p = new Person(name,age);
-//        people.add(p);
-//        
-//        return gson.toJson(p);
-//    }
-//    
-//    public String updateUser(String name, int age, int id){
-//        Gson gson = new GsonBuilder().create();
-//        
-//        Person p = people.remove(id);
-//        p.setAge(age);
-//        p.setName(name);
-//        people.add(id, p);
-//        
-//        return gson.toJson(p);
-//    }
+    
+    public int deleteUser(int id){
+       for(Person x: people){
+            if(x.getCust_id() == id){
+              people.remove(x);
+            }
+          }
+        return 204;
+    }
+    
+    public String addUser(String name, String address, String email, String phone){
+        Gson gson = new GsonBuilder().create();
+        // Temp code to add cust id.
+        int id = people.size();
+        Person p = new Person(id,name,address,email,phone);
+        people.add(p);
+        return gson.toJson(p);
+    }
+    
+    public String updateUser(int id, String name, String address, String email, String phone){
+        Gson gson = new GsonBuilder().create();
+        Person p = new Person();
+        
+        for(Person x: people){
+            if(x.getCust_id() == id){
+                p = x;
+                people.remove(x);
+            }
+        }
+        p.setAddress(address);
+        p.setName(name);
+        p.setEmail(email);
+        p.setPhone(phone);
+
+        people.add(p);
+        
+        return gson.toJson(p);
+    }
 }
