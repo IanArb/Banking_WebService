@@ -37,7 +37,6 @@ public class Customers {
     
     @DELETE
     @Path("/{cust_id}")
-    @Produces(MediaType.TEXT_HTML)
     public Response deleteUser(@PathParam("cust_id") int id){
        users.deleteUser(id);      
        return Response.status(Response.Status.NO_CONTENT).build();
