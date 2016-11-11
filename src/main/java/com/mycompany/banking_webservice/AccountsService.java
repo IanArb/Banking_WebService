@@ -55,4 +55,13 @@ public class AccountsService {
          
          return gson.toJson(result);
      }
+     
+     public void deleteAccount(int cust_id, int account_no){
+         for(Account x: accounts){
+             if(x.getCid() == cust_id && x.getAccount_no() == account_no){
+                 accounts.remove(x);
+                 break;
+             }
+         }
+     }
 }

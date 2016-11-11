@@ -46,13 +46,13 @@ public class CustomerService {
     }
    
     
-    public int deleteUser(int id){
+    public void deleteUser(int id){
        for(Person x: people){
             if(x.getCust_id() == id){
               people.remove(x);
+              break;
             }
           }
-        return 204;
     }
     
     public String addUser(String name, String address, String email, String phone){

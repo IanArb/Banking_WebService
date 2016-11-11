@@ -5,7 +5,7 @@
  */
 package com.mycompany.banking_webservice;
 
-import static com.mycompany.banking_webservice.Customers.users;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 @Path("/accounts")
 public class Accounts {
     static AccountsService accounts = new AccountsService();
+   
     @GET
     @Path("/balance/{cust_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,5 +34,13 @@ public class Accounts {
            return Response.status(Response.Status.OK).entity(accounts.getBalance(id)).build();
 
         }
+    }
+    
+    @DELETE
+    @Path("/{cust_id}/{account_no}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response deleteUser(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
+       accounts.deleteAccount(id, account_no);      
+       return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

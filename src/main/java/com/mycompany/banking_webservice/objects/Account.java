@@ -13,6 +13,10 @@ public class Account {
     int account_no, cid, balance, sort_code;
 
     public Account(){
+        this.account_no = -1;
+        this.cid = -1;
+        this.balance = -1;
+        this.sort_code = -1;
         
     }
     
