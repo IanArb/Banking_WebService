@@ -68,12 +68,7 @@ public class Customers {
         String address = obj.get("address").getAsString();
         String email = obj.get("email").getAsString();
         String phone = obj.get("phone").getAsString();
-System.out.println(""+id);
-System.out.println(name);
-System.out.println(email);
-System.out.println(address);
-System.out.println(phone);
-
+        
         return Response.status(Response.Status.CREATED).entity(users.updateUser(id,name,address,email,phone)).build();
     }
     
