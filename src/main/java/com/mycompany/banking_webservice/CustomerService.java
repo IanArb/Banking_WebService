@@ -58,7 +58,14 @@ public class CustomerService {
     public String addUser(String name, String address, String email, String phone){
         Gson gson = new GsonBuilder().create();
         // Temp code to add cust id.
-        int id = people.size();
+        int high = 0;
+        for(Person x: people){
+            if(x.getCust_id()>high){
+                high = x.getCust_id();
+            }
+        }
+        int id = high+1;
+        
         Person p = new Person(id,name,address,email,phone);
         people.add(p);
         return gson.toJson(p);

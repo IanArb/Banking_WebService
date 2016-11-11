@@ -5,9 +5,14 @@
  */
 package com.mycompany.banking_webservice;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import static com.mycompany.banking_webservice.Customers.users;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -38,9 +43,20 @@ public class Accounts {
     
     @DELETE
     @Path("/{cust_id}/{account_no}")
-    @Produces(MediaType.TEXT_HTML)
     public Response deleteUser(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
        accounts.deleteAccount(id, account_no);      
        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addUser(String entity) {    
+        JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
+
+        int cust_id = obj.get("cust_id").getAsInt();
+        int sort_code = obj.get("sort_code").getAsInt();
+
+        return Response.status(Response.Status.CREATED).entity(accounts.addAccount(cust_id, sort_code)).build();
     }
 }

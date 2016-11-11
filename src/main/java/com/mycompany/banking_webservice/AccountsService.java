@@ -64,4 +64,22 @@ public class AccountsService {
              }
          }
      }
+     
+     public String addAccount(int cust_id, int sort_code){
+         Gson gson = new GsonBuilder().create();
+         // Temp code to add account_no.
+        int high = 0;
+        for(Account x: accounts){
+            if(x.getAccount_no()>high){
+                high = x.getAccount_no();
+            }
+        }
+        int no = high+1;
+        
+        Account a = new Account(no,cust_id,0,sort_code);
+        accounts.add(a);
+         
+         
+         return gson.toJson(a);
+     }
 }
