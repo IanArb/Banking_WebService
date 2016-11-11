@@ -5,6 +5,7 @@
  */
 package com.mycompany.banking_webservice;
 
+import com.mycompany.banking_webservice.objects.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
