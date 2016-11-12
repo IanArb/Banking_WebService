@@ -1,0 +1,16 @@
+<!-- This config files allow us to let Jetty recongise our database -->
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <New id="DSTix" class="org.eclipse.jetty.plus.jndi.Resource">
+    <Arg>jdbc/DSTix</Arg>
+    <Arg>
+        <!-- To avoid any potential problems, make sure your username and password is the same -->
+      <New class="org.apache.commons.dbcp.BasicDataSource">
+         <Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+         <Set name="url">jdbc:mysql://localhost:3306/banking</Set>
+         <Set name="username">root</Set>
+         <Set name="password">B@nk1ng101</Set>
+         <Set name="validationQuery">SELECT 1</Set>
+      </New>
+    </Arg>
+  </New>
+</Configure>
