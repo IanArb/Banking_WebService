@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.banking_webservice;
+package services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mycompany.banking_webservice.objects.Account;
+import com.mycompany.banking_webservice.models.Account;
 import java.util.ArrayList;
 
 /**

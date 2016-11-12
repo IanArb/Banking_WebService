@@ -14,23 +14,48 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
-     <dependencies>
+    <dependencies>
+        <!-- Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
             <type>jar</type>
         </dependency>
+        <!-- Glassfish container -->
         <dependency> 
             <groupId>org.glassfish.jersey.containers</groupId> 
             <artifactId>jersey-container-servlet</artifactId> 
             <version>2.0</version>
+        </dependency>
+        <!-- Connection pool -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>20030825.184428</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <!-- Database -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.34</version>
+        </dependency>
+        <!-- JSON provider -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>2.4.0</version>
         </dependency>
     </dependencies>
 
@@ -89,7 +114,7 @@
                 <configuration>
                     <httpConnector>                     
                         <!--host>127.0.0.1</host--> 
-                    <port>49000</port>
+                        <port>49000</port>
                     </httpConnector>
                     <scanIntervalSeconds>3</scanIntervalSeconds> 
                     <webAppConfig>

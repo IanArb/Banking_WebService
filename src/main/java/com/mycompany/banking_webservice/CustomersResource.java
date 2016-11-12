@@ -5,6 +5,7 @@
  */
 package com.mycompany.banking_webservice;
 
+import services.CustomerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javax.ws.rs.Consumes;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.Response;
  */
 
 @Path("/customers")
-public class Customers {
+public class CustomersResource {
     static CustomerService users = new CustomerService();
     
     @GET

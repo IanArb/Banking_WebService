@@ -27,7 +27,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Conor
  */
 @Path("/calculate")
-public class Calculator {
+public class CalculatorResource {
     
     //Get Method to add numbers
     @GET

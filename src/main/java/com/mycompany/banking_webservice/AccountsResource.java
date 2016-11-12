@@ -5,9 +5,10 @@
  */
 package com.mycompany.banking_webservice;
 
+import services.AccountsService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import static com.mycompany.banking_webservice.Customers.users;
+import static com.mycompany.banking_webservice.CustomersResource.users;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -25,7 +26,7 @@ import javax.ws.rs.core.Response;
  * @author Conor
  */
 @Path("/accounts")
-public class Accounts {
+public class AccountsResource {
     static AccountsService accounts = new AccountsService();
    
     @GET
