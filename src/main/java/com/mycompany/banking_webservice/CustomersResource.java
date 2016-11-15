@@ -5,7 +5,7 @@
  */
 package com.mycompany.banking_webservice;
 
-import services.CustomerService;
+import com.mycompany.banking_webservice.services.CustomerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javax.ws.rs.Consumes;

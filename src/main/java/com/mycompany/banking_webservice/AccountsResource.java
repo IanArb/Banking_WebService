@@ -5,7 +5,7 @@
  */
 package com.mycompany.banking_webservice;
 
-import services.AccountsService;
+import com.mycompany.banking_webservice.services.AccountsService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import static com.mycompany.banking_webservice.CustomersResource.users;
