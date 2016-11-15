@@ -56,8 +56,8 @@ public class CustomersResource {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addCustomer(String entity) {    
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response addCustomer(String entity, @DefaultValue("json") @QueryParam("type") String type) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
 
         String name = obj.get("name").getAsString();
@@ -65,22 +65,42 @@ public class CustomersResource {
         String email = obj.get("email").getAsString();
         String phone = obj.get("phone").getAsString();
 
-        return Response.status(Response.Status.CREATED).entity(users.addUser(name,address,email,phone)).build();
+        String response = users.addUser(name,address,email,phone);
+        
+        if(type.equalsIgnoreCase("xml")){
+            response = jsonToXml(response,"customer");
+        }
+        
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(response)
+                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                .build();
     }    
     
     @PUT
     @Path("/{cust_id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCustomer(String entity, @PathParam("cust_id") int id) {   
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response updateCustomer(String entity, @PathParam("cust_id") int id, @DefaultValue("json") @QueryParam("type") String type) {   
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
 
         String name = obj.get("name").getAsString();
         String address = obj.get("address").getAsString();
         String email = obj.get("email").getAsString();
         String phone = obj.get("phone").getAsString();
+                
+        String response = users.updateUser(id,name,address,email,phone);
         
-        return Response.status(Response.Status.CREATED).entity(users.updateUser(id,name,address,email,phone)).build();
+        if(type.equalsIgnoreCase("xml")){
+            response = jsonToXml(response,"customer");
+        }
+        
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(response)
+                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                .build();
     }
     
     private String jsonToXml(String json, String rootElem){
