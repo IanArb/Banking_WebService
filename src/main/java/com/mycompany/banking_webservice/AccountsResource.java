@@ -20,6 +20,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.json.JSONObject;
+import org.json.XML;
 
 /**
  *
@@ -31,57 +33,109 @@ public class AccountsResource {
    
     @GET
     @Path("/balance/{cust_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("cust_id") int id, @DefaultValue("-1") @QueryParam("account") int account_no){
-       
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response getBalance(@PathParam("cust_id") int id, @DefaultValue("-1") @QueryParam("account") int account_no,@DefaultValue("json") @QueryParam("type") String type){
+       String response;
         if(account_no > -1){
-           return Response.status(Response.Status.OK).entity(accounts.getBalance(id, account_no)).build();
+           response = accounts.getBalance(id, account_no);
         }else{
-           return Response.status(Response.Status.OK).entity(accounts.getBalance(id)).build();
-
+           response = accounts.getBalance(id);
         }
+        
+        if(type.equalsIgnoreCase("xml")){
+            response = jsonToXml(response,"account");
+        }
+        return Response
+                .status(Response.Status.OK)
+                .entity(response)
+                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                .build();
     }
     
     @DELETE
     @Path("/{cust_id}/{account_no}")
-    public Response deleteUser(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
+    public Response deleteAccount(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
        accounts.deleteAccount(id, account_no);      
        return Response.status(Response.Status.NO_CONTENT).build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addUser(String entity) {    
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response addAccount(String entity, @DefaultValue("json") @QueryParam("type") String type) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
 
         int cust_id = obj.get("cust_id").getAsInt();
         int sort_code = obj.get("sort_code").getAsInt();
 
-        return Response.status(Response.Status.CREATED).entity(accounts.addAccount(cust_id, sort_code)).build();
+        String response = accounts.addAccount(cust_id, sort_code);
+        
+        if(type.equalsIgnoreCase("xml")){
+            response = jsonToXml(response,"account");
+        }
+        
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(response)
+                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                .build();
     }
+  
           
     @POST
     @Path("/{type}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response transa(String entity, @PathParam("type") String type) {    
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response transaction(String entity, @PathParam("type") String type, @DefaultValue("json") @QueryParam("type") String returnType) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
       
         int cust_id = obj.get("cust_id").getAsInt();
         int account_no = obj.get("account_no").getAsInt();
         int amount = obj.get("amount").getAsInt();
+        String response = "";
+        String root = "";
         
         if(type.equalsIgnoreCase("withdrawal")){
-            return Response.status(Response.Status.OK).entity(accounts.withdrawal(cust_id, account_no, amount)).build();
+            response = accounts.withdrawal(cust_id, account_no, amount);
+            root = "withdrawal";
         }else if(type.equalsIgnoreCase("lodgement")){
-            return Response.status(Response.Status.OK).entity(accounts.lodgement(cust_id, account_no, amount)).build();
+            response = accounts.lodgement(cust_id, account_no, amount);
+            root = "lodgement";
         }else if(type.equalsIgnoreCase("transfer")){
             int cust_to = obj.get("cust_id_to").getAsInt();
             int account_to = obj.get("account_no_to").getAsInt();
-            return Response.status(Response.Status.OK).entity(accounts.transfer(cust_to, account_to, cust_id, account_no, amount)).build();
-        }else {
-           return Response.status(Response.Status.BAD_REQUEST).build();
+            response = accounts.transfer(cust_to, account_to, cust_id, account_no, amount);
+            root = "transfer";
         }
+           
+        if(returnType.equalsIgnoreCase("xml") && response.length() > 0 ){
+            response = jsonToXml(response,root);
+        }
+        
+        return Response
+                .status((response.equalsIgnoreCase(""))? Response.Status.BAD_REQUEST : Response.Status.CREATED)
+                .entity(response)
+                .type((returnType.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                .build();
+        
     }  
+    
+    
+    private String jsonToXml(String json, String rootElem){
+        System.out.println(json);
+      JSONObject obj;
+      String xml = "";
+        if(json.charAt(0) != '{'){
+            json = "{"+rootElem+":"+json+"}";
+        }
+      
+        obj = new JSONObject(json);
+        xml = XML.toString(obj);
+        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<"+rootElem+"s>"
+                    +xml
+                    +"</"+rootElem+"s>";
+        return xml;
+    }
+    
 }
