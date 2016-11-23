@@ -11,6 +11,7 @@ package com.mycompany.banking_webservice.models;
  */
 public class Account {
     int account_no, cid, balance, sort_code;
+    
 
     public Account(){
         this.account_no = -1;
@@ -58,7 +59,5 @@ public class Account {
     public void setSort_code(int sort_code) {
         this.sort_code = sort_code;
     }
-    
-    
     
 }
