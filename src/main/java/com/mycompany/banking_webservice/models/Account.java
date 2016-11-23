@@ -59,6 +59,4 @@ public class Account {
         this.sort_code = sort_code;
     }
     
-    
-    
 }
