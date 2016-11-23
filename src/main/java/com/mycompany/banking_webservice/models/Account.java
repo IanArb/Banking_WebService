@@ -11,6 +11,7 @@ package com.mycompany.banking_webservice.models;
  */
 public class Account {
     int account_no, cid, balance, sort_code;
+    
 
     public Account(){
         this.account_no = -1;

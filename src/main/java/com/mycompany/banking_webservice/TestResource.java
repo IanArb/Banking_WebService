@@ -7,7 +7,6 @@ package com.mycompany.banking_webservice;
 
 import com.mycompany.banking_webservice.database.DatabaseManager;
 import com.mycompany.banking_webservice.models.Person;
-import com.mycompany.banking_webservice.services.DatabaseTestService;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
