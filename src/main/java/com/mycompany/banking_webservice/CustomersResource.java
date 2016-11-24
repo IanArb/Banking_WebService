@@ -34,7 +34,7 @@ import org.json.XML;
 
 @Path("/customers")
 public class CustomersResource {
-    static CustomerService users = new CustomerService();
+    CustomerService users = new CustomerService();
     
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
