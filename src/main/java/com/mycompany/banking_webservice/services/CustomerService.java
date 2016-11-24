@@ -6,11 +6,12 @@
 package com.mycompany.banking_webservice.services;
 
 import com.mycompany.banking_webservice.database.DatabaseManager;
-import com.mycompany.banking_webservice.models.Person;
+import com.mycompany.banking_webservice.models.Customer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -20,34 +21,39 @@ import javax.naming.NamingException;
  * @author Conor
  */
 public class CustomerService {
-    static ArrayList<Person> people = new ArrayList<>();
+    static ArrayList<Customer> people = new ArrayList<>();
     DatabaseManager db;
     
     public CustomerService(){
         db = new DatabaseManager();
         if(people.isEmpty()){    
             try {
-                people = (ArrayList<Person>) db.getAllCustomers();
+                people = (ArrayList<Customer>) db.getAllCustomers();
             } catch (SQLException | NamingException ex) {}
         }
     }
     
-    public String getUsers(int id) throws SQLException, NamingException{
-        Gson gson = new GsonBuilder().create();
+    public List<Customer> getUsers(int id){
         DatabaseManager db = new DatabaseManager();
+        List<Customer> customers = new ArrayList<>();
         if(id > -1){
-            Person p = db.getCustomer(id);
-           if(p.getCust_id() == 0){
-              return gson.toJson("No Results for Cutomer with id: "+id);
-           }
-            return gson.toJson(p);
+            try {
+                customers = (List<Customer>) db.getCustomer(id);
+            } catch (SQLException | NamingException ex) {
+                Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try {
+                customers = (List<Customer>) db.getAllCustomers();
+            } catch (SQLException | NamingException ex) {
+                Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-         return gson.toJson(db.getAllCustomers());
+         return customers;
     }
-   
-    
+  
     public void deleteUser(int id){
-       for(Person x: people){
+       for(Customer x: people){
             if(x.getCust_id() == id){
               people.remove(x);
               break;
@@ -59,23 +65,23 @@ public class CustomerService {
         Gson gson = new GsonBuilder().create();
         // Temp code to add cust id.
         int high = 0;
-        for(Person x: people){
+        for(Customer x: people){
             if(x.getCust_id()>high){
                 high = x.getCust_id();
             }
         }
         int id = high+1;
         
-        Person p = new Person(id,name,address,email,phone);
+        Customer p = new Customer(id,name,address,email,phone);
         people.add(p);
         return gson.toJson(p);
     }
     
     public String updateUser(int id, String name, String address, String email, String phone){
         Gson gson = new GsonBuilder().create();
-        Person p = new Person();
+        Customer p = new Customer();
         
-        for(Person x: people){
+        for(Customer x: people){
             if(x.getCust_id() == id){
                 p = x;
                 people.remove(x);

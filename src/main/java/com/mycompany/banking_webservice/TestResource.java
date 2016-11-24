@@ -6,7 +6,7 @@
 package com.mycompany.banking_webservice;
 
 import com.mycompany.banking_webservice.database.DatabaseManager;
-import com.mycompany.banking_webservice.models.Person;
+import com.mycompany.banking_webservice.models.Customer;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
@@ -27,13 +27,13 @@ public class TestResource {
     
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Person> getAllCustomers() throws SQLException, NamingException {
+    public List<Customer> getAllCustomers() throws SQLException, NamingException {
        return testService.getAllCustomers();
     }
     
     @GET
     @Path("/{cust_id}")
-    public Person getCustomer(@PathParam("cust_id") int id) throws SQLException, NamingException {
+    public Customer getCustomer(@PathParam("cust_id") int id) throws SQLException, NamingException {
         return testService.getCustomer(id);
     }
 }

@@ -8,7 +8,9 @@ package com.mycompany.banking_webservice;
 import com.mycompany.banking_webservice.services.CustomerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.mycompany.banking_webservice.models.Customer;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -38,26 +40,8 @@ public class CustomersResource {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getCustomer(@DefaultValue("-1") @QueryParam("cust_id") int id, @DefaultValue("json") @QueryParam("type") String type){
-        String response;
-        try {
-            response = users.getUsers(id);
-     
-            if(type.equalsIgnoreCase("xml")){
-                response = jsonToXml(response,"customer");
-            }
-            
-        } catch (SQLException | NamingException ex) {
-            Logger.getLogger(CustomersResource.class.getName()).log(Level.SEVERE, null, ex);
-            response = "Error Unable to retrieve Customer";
-        }
-        
-        
-        return Response
-                .status(Response.Status.OK)
-                .entity(response)
-                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .build();
+    public List<Customer> getCustomer(@DefaultValue("-1") @QueryParam("cust_id") int id){
+        return users.getUsers(id);
     }
     
     @DELETE

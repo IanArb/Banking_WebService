@@ -6,7 +6,7 @@
 package com.mycompany.banking_webservice.database;
 
 import com.mycompany.banking_webservice.models.Account;
-import com.mycompany.banking_webservice.models.Person;
+import com.mycompany.banking_webservice.models.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,14 +31,14 @@ public class DatabaseManager {
         return dataSource.getConnection();
     }
     
-    public List<Person> getAllCustomers() throws SQLException, NamingException {
+    public List<Customer> getAllCustomers() throws SQLException, NamingException {
         List customers = new ArrayList<>();
         Connection db = getConnection();
         try {
             PreparedStatement st = db.prepareStatement("SELECT * FROM Customer");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Person person = getCustomers(rs);
+                Customer person = getCustomers(rs);
                 customers.add(person);
             }
             return customers;
@@ -47,8 +47,8 @@ public class DatabaseManager {
         }
     }
 
-    public Person getCustomer(int id) throws SQLException, NamingException {
-        Person person = new Person();
+    public Customer getCustomer(int id) throws SQLException, NamingException {
+        Customer person = new Customer();
         Connection db = getConnection();
         try {
             PreparedStatement st = db.prepareStatement("SELECT * FROM Customer WHERE _id =" + id);
@@ -63,8 +63,8 @@ public class DatabaseManager {
         }
     }
 
-    public Person getCustomers(ResultSet result) throws SQLException {
-        Person person = new Person();
+    public Customer getCustomers(ResultSet result) throws SQLException {
+        Customer person = new Customer();
 
         int getId = result.getInt("_id");
         String getName = result.getString("name");
