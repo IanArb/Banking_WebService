@@ -21,14 +21,14 @@ import javax.naming.NamingException;
  * @author Conor
  */
 public class CustomerService {
-    static ArrayList<Customer> people = new ArrayList<>();
+    static ArrayList<Customer> customers = new ArrayList<>();
     DatabaseManager db;
     
     public CustomerService(){
         db = new DatabaseManager();
-        if(people.isEmpty()){    
+        if(customers.isEmpty()){    
             try {
-                people = (ArrayList<Customer>) db.getAllCustomers();
+                customers = (ArrayList<Customer>) db.getAllCustomers();
             } catch (SQLException | NamingException ex) {}
         }
     }
@@ -53,48 +53,46 @@ public class CustomerService {
     }
   
     public void deleteUser(int id){
-       for(Customer x: people){
+       for(Customer x: customers){
             if(x.getCust_id() == id){
-              people.remove(x);
+              customers.remove(x);
               break;
             }
           }
     }
     
-    public String addUser(String name, String address, String email, String phone){
-        Gson gson = new GsonBuilder().create();
+    public Customer addUser(String name, String address, String email, String phone){
         // Temp code to add cust id.
         int high = 0;
-        for(Customer x: people){
+        for(Customer x: customers){
             if(x.getCust_id()>high){
                 high = x.getCust_id();
             }
         }
         int id = high+1;
-        
-        Customer p = new Customer(id,name,address,email,phone);
-        people.add(p);
-        return gson.toJson(p);
+        // Change code Above when db is implement to auto generate
+        Customer c = new Customer(id,name,address,email,phone);
+        customers.add(c);
+        return c;
     }
     
-    public String updateUser(int id, String name, String address, String email, String phone){
-        Gson gson = new GsonBuilder().create();
-        Customer p = new Customer();
+    public Customer updateUser(int id, String name, String address, String email, String phone){
+        Customer c = new Customer();
         
-        for(Customer x: people){
+        for(Customer x: customers){
             if(x.getCust_id() == id){
-                p = x;
-                people.remove(x);
+                c = x;
+                customers.remove(x);
                 break;
             }
         }
-        p.setAddress(address);
-        p.setName(name);
-        p.setEmail(email);
-        p.setPhone(phone);
+        c.setAddress(address);
+        c.setName(name);
+        c.setEmail(email);
+        c.setPhone(phone);
 
-        people.add(p);
+        customers.add(c);
         
-        return gson.toJson(p);
+        return c;
     }
 }

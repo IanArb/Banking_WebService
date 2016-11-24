@@ -9,11 +9,7 @@ import com.mycompany.banking_webservice.services.CustomerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mycompany.banking_webservice.models.Customer;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -26,8 +22,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.json.JSONObject;
-import org.json.XML;
 
 /**
  *
@@ -54,67 +48,30 @@ public class CustomersResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response addCustomer(String entity, @DefaultValue("json") @QueryParam("type") String type) {    
+    public Customer addCustomer(String entity, @DefaultValue("json") @QueryParam("type") String type) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
-
+        
         String name = obj.get("name").getAsString();
         String address = obj.get("address").getAsString();
         String email = obj.get("email").getAsString();
         String phone = obj.get("phone").getAsString();
 
-        String response = users.addUser(name,address,email,phone);
+        return users.addUser(name,address,email,phone);
         
-        if(type.equalsIgnoreCase("xml")){
-            response = jsonToXml(response,"customer");
-        }
-        
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(response)
-                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .build();
     }    
     
     @PUT
     @Path("/{cust_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateCustomer(String entity, @PathParam("cust_id") int id, @DefaultValue("json") @QueryParam("type") String type) {   
-        JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
-
+    public Customer updateCustomer(String entity, @PathParam("cust_id") int id, @DefaultValue("json") @QueryParam("type") String type) {   
+        JsonObject obj = new Gson().fromJson(entity, JsonObject.class);      
+      
         String name = obj.get("name").getAsString();
         String address = obj.get("address").getAsString();
         String email = obj.get("email").getAsString();
         String phone = obj.get("phone").getAsString();
-                
-        String response = users.updateUser(id,name,address,email,phone);
         
-        if(type.equalsIgnoreCase("xml")){
-            response = jsonToXml(response,"customer");
-        }
-        
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(response)
-                .type((type.equalsIgnoreCase("xml"))? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .build();
-    }
-    
-    private String jsonToXml(String json, String rootElem){
-        System.out.println(json);
-      JSONObject obj;
-      String xml = "";
-        if(json.charAt(0) != '{'){
-            json = "{"+rootElem+":"+json+"}";
-        }
-      
-        obj = new JSONObject(json);
-        xml = XML.toString(obj);
-        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                    + "<"+rootElem+"s>"
-                    +xml
-                    +"</"+rootElem+"s>";
-        return xml;
-    }
-    
+        return users.updateUser(id,name,address,email,phone);
+    }    
 }
