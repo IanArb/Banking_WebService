@@ -48,7 +48,7 @@ public class CustomersResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Customer addCustomer(String entity, @DefaultValue("json") @QueryParam("type") String type) {    
+    public Customer addCustomer(String entity) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
         
         String name = obj.get("name").getAsString();
@@ -64,7 +64,7 @@ public class CustomersResource {
     @Path("/{cust_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Customer updateCustomer(String entity, @PathParam("cust_id") int id, @DefaultValue("json") @QueryParam("type") String type) {   
+    public Customer updateCustomer(String entity, @PathParam("cust_id") int id) {   
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);      
       
         String name = obj.get("name").getAsString();

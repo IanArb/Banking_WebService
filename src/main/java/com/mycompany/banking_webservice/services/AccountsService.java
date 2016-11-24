@@ -5,10 +5,10 @@
  */
 package com.mycompany.banking_webservice.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mycompany.banking_webservice.models.Account;
+import com.mycompany.banking_webservice.models.Transaction;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -29,31 +29,30 @@ public class AccountsService {
         }
     }
      
-     public String getBalance(int cust_id){
-         Gson gson = new GsonBuilder().create();
-         ArrayList<Account> result = new ArrayList<>();
+     public List<Account> getBalance(int cust_id){
+         List<Account> result = new ArrayList<>();
          
          for(Account x: accounts){
              if(x.getCid() == cust_id){
                  result.add(x);
              }
-         }
-         
-         return gson.toJson(result);
+         }        
+         return result;
      }
      
-     public String getBalance(int cust_id,int account_no){
-         Gson gson = new GsonBuilder().create();
-         Account result = new Account();
-         
-         for(Account x: accounts){
-             if(x.getCid() == cust_id && x.getAccount_no() == account_no){
-                 result = x;
+     public List<Account> getBalance(int cust_id,int account_no){
+         List<Account> all = getBalance(cust_id);        
+         if(account_no == -1){
+             return all;
+         }        
+         List<Account> account = new ArrayList<>();       
+         for(Account x: all){
+             if( x.getAccount_no() == account_no){
+                 account.add(x);
                  break;
              }
-         }
-         
-         return gson.toJson(result);
+         }        
+         return account;
      }
      
      public void deleteAccount(int cust_id, int account_no){
@@ -65,8 +64,7 @@ public class AccountsService {
          }
      }
      
-     public String addAccount(int cust_id, int sort_code){
-         Gson gson = new GsonBuilder().create();
+     public Account addAccount(int cust_id, int sort_code){
          // Temp code to add account_no.
         int high = 0;
         for(Account x: accounts){
@@ -78,37 +76,32 @@ public class AccountsService {
         
         Account a = new Account(no,cust_id,0,sort_code);
         accounts.add(a);
-         
-        return gson.toJson(a);
+        return a;
      }
 
-    public String withdrawal(int cust_id, int account_no, int amount) {
-        Gson gson = new GsonBuilder().create();
-        Account a = transaction(cust_id,account_no, amount, 0);
-        return gson.toJson(a);
+    public Transaction withdrawal(int account_no, int amount) {
+        Transaction w = transaction( amount, account_no, "withdrawal");
+        return w;
     }
     
-    public String lodgement(int cust_id, int account_no, int amount) {
-        Gson gson = new GsonBuilder().create();
-        Account a = transaction(cust_id,account_no, amount, 1);
-        return gson.toJson(a);
+    public Transaction lodgement(int account_no, int amount) {
+        Transaction l = transaction(amount, account_no, "lodgement");
+        return l;
     }
     
-    public String transfer(int cust_to, int account_to, int cust_from, int account_from, int amount) {
-        Gson gson = new GsonBuilder().create();
-        ArrayList<Account> transfer = new ArrayList<>();
-        Account out = transaction(cust_from,account_from, amount, 0);
-        Account in = transaction(cust_to,account_to, amount, 1);
-        transfer.add(out);
-        transfer.add(in);
-        return gson.toJson(transfer);
+    public List<Transaction> transfer(int account_to, int account_from, int amount) {
+        List<Transaction> transfer = new ArrayList<>();
+        transfer.add(withdrawal(account_from, amount));
+        transfer.add(lodgement(account_to, amount));
+        return transfer;
     }
     
-    public Account transaction(int cust_id, int account_no, int amount, int type){
+    public Transaction transaction(int amount, int account_no, String type){
          Account a = new Account();
          
+         //get all accounts
          for(Account x: accounts){
-             if(x.getCid() == cust_id && x.getAccount_no() == account_no){
+             if( x.getAccount_no() == account_no){
                  a = x;
                  accounts.remove(x);
                  break;
@@ -117,13 +110,19 @@ public class AccountsService {
          
          int currBalance = a.getBalance();
          int newBalance = currBalance;
-         if(type == 0){
+         
+         if(type.equalsIgnoreCase("withdrawal")){
             newBalance = currBalance - amount;
-         }else if(type==1){
+         }else if(type.equalsIgnoreCase("lodgement")){
            newBalance = currBalance + amount;
          }
+         
          a.setBalance(newBalance);
          accounts.add(a);
-         return a;
+         
+         // tempn setting id to account no
+         int id = account_no;
+         Transaction t = new Transaction(id, amount, newBalance, account_no, type);
+         return t;
     }
 }

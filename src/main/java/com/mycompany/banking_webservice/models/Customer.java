@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Customer {
-    int cust_id;
-    String name,address,email,phone;
+    private int cust_id;
+    private String name,address,email,phone;
 
     public Customer(int cust_id, String name, String address, String email, String phone) {
        this.cust_id = cust_id;
