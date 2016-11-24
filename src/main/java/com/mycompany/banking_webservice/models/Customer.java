@@ -5,15 +5,18 @@
  */
 package com.mycompany.banking_webservice.models;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Conor
  */
-public class Person {
-    int cust_id;
-    String name,address,email,phone;
+@XmlRootElement
+public class Customer {
+    private int cust_id;
+    private String name,address,email,phone;
 
-    public Person(int cust_id, String name, String address, String email, String phone) {
+    public Customer(int cust_id, String name, String address, String email, String phone) {
        this.cust_id = cust_id;
         this.name = name;
         this.address = address;
@@ -21,7 +24,7 @@ public class Person {
         this.phone = phone;
     }
     
-    public Person(String name, String address, String email, String phone) {
+    public Customer(String name, String address, String email, String phone) {
         this.cust_id = -1;
         this.name = name;
         this.address = address;
@@ -29,7 +32,7 @@ public class Person {
         this.phone = phone;
     }
     
-    public Person() {
+    public Customer() {
 
     }
 

@@ -5,90 +5,94 @@
  */
 package com.mycompany.banking_webservice.services;
 
-import com.mycompany.banking_webservice.models.Person;
+import com.mycompany.banking_webservice.database.DatabaseManager;
+import com.mycompany.banking_webservice.models.Customer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 
 /**
  *
  * @author Conor
  */
 public class CustomerService {
-    static ArrayList<Person> people = new ArrayList<>();
+    static ArrayList<Customer> customers = new ArrayList<>();
+    DatabaseManager db;
     
     public CustomerService(){
-        if(people.isEmpty()){
-            people.add(new Person(1,"Conor","Dublin","Conor@test.com", "018657477"));
-            people.add(new Person(2,"Jessie","Meath","Jessie@test.com","018633477")); 
-            people.add(new Person(3,"Shane","Cork","Shane@test.com","018612747"));
-            people.add(new Person(4,"Ben","Dublin","Ben@test.com","018651377"));
-            
+        db = new DatabaseManager();
+        if(customers.isEmpty()){    
+            try {
+                customers = (ArrayList<Customer>) db.getAllCustomers();
+            } catch (SQLException | NamingException ex) {}
         }
     }
     
-    public String getUsers(int id){
-        Gson gson = new GsonBuilder().create();
+    public List<Customer> getUsers(int id){
+        DatabaseManager db = new DatabaseManager();
+        List<Customer> customers = new ArrayList<>();
         if(id > -1){
-        ArrayList<Person> filtered = new ArrayList<>();
-        for(Person x: people){
-            if(x.getCust_id() == id){
-                filtered.add(x);
+            try {
+                customers = (List<Customer>) db.getCustomer(id);
+            } catch (SQLException | NamingException ex) {
+                Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
             }
-          }
-        if(filtered.size() > 0){
-            return gson.toJson(filtered);
         }else{
-            return gson.toJson("No Results for Cutomer with id: "+id);
+            try {
+                customers = (List<Customer>) db.getAllCustomers();
+            } catch (SQLException | NamingException ex) {
+                Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        }
-        return gson.toJson(people);
+         return customers;
     }
-   
-    
+  
     public void deleteUser(int id){
-       for(Person x: people){
+       for(Customer x: customers){
             if(x.getCust_id() == id){
-              people.remove(x);
+              customers.remove(x);
               break;
             }
           }
     }
     
-    public String addUser(String name, String address, String email, String phone){
-        Gson gson = new GsonBuilder().create();
+    public Customer addUser(String name, String address, String email, String phone){
         // Temp code to add cust id.
         int high = 0;
-        for(Person x: people){
+        for(Customer x: customers){
             if(x.getCust_id()>high){
                 high = x.getCust_id();
             }
         }
         int id = high+1;
-        
-        Person p = new Person(id,name,address,email,phone);
-        people.add(p);
-        return gson.toJson(p);
+        // Change code Above when db is implement to auto generate
+        Customer c = new Customer(id,name,address,email,phone);
+        customers.add(c);
+        return c;
     }
     
-    public String updateUser(int id, String name, String address, String email, String phone){
-        Gson gson = new GsonBuilder().create();
-        Person p = new Person();
+    public Customer updateUser(int id, String name, String address, String email, String phone){
+        Customer c = new Customer();
         
-        for(Person x: people){
+        for(Customer x: customers){
             if(x.getCust_id() == id){
-                p = x;
-                people.remove(x);
+                c = x;
+                customers.remove(x);
                 break;
             }
         }
-        p.setAddress(address);
-        p.setName(name);
-        p.setEmail(email);
-        p.setPhone(phone);
+        c.setAddress(address);
+        c.setName(name);
+        c.setEmail(email);
+        c.setPhone(phone);
 
-        people.add(p);
+        customers.add(c);
         
-        return gson.toJson(p);
+        return c;
     }
 }

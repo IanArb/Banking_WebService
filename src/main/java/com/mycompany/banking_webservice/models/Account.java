@@ -5,14 +5,16 @@
  */
 package com.mycompany.banking_webservice.models;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Conor
  */
+@XmlRootElement
 public class Account {
-    int account_no, cid, balance, sort_code;
+    private int account_no, cid, balance, sort_code;
     
-
     public Account(){
         this.account_no = -1;
         this.cid = -1;

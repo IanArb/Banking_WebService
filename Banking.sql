@@ -19,6 +19,11 @@
 -- Table structure for table `Account`
 --
 
+DROP DATABASE IF EXISTS `Banking`;
+CREATE DATABASE `Banking`;
+USE `Banking`;
+
+
 DROP TABLE IF EXISTS `Account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
