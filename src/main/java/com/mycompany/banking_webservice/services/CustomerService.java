@@ -5,10 +5,13 @@
  */
 package com.mycompany.banking_webservice.services;
 
+import com.mycompany.banking_webservice.database.DatabaseManager;
 import com.mycompany.banking_webservice.models.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 
 /**
  *
@@ -27,22 +30,17 @@ public class CustomerService {
         }
     }
     
-    public String getUsers(int id){
+    public String getUsers(int id) throws SQLException, NamingException{
         Gson gson = new GsonBuilder().create();
+        DatabaseManager db = new DatabaseManager();
         if(id > -1){
-        ArrayList<Person> filtered = new ArrayList<>();
-        for(Person x: people){
-            if(x.getCust_id() == id){
-                filtered.add(x);
-            }
-          }
-        if(filtered.size() > 0){
-            return gson.toJson(filtered);
-        }else{
-            return gson.toJson("No Results for Cutomer with id: "+id);
+            Person p = db.getCustomer(id);
+           if(p.getCust_id() == 0){
+              return gson.toJson("No Results for Cutomer with id: "+id);
+           }
+            return gson.toJson(p);
         }
-        }
-        return gson.toJson(people);
+         return gson.toJson(db.getAllCustomers());
     }
    
     
