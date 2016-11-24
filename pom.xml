@@ -22,11 +22,6 @@
             <version>2.2.4</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160212</version>
-        </dependency>
         <!-- Glassfish container -->
         <dependency> 
             <groupId>org.glassfish.jersey.containers</groupId> 
