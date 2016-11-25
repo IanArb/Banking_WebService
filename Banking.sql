@@ -35,7 +35,7 @@ CREATE TABLE `Account` (
   PRIMARY KEY (`account_no`),
   KEY `cid` (`cid`),
   KEY `sort_code` (`sort_code`),
-  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `Customer` (`_id`),
+  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `Customer` (`cust_id`),
   CONSTRAINT `account_ibfk_2` FOREIGN KEY (`sort_code`) REFERENCES `Branch` (`sort_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -80,12 +80,12 @@ DROP TABLE IF EXISTS `Customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Customer` (
-  `_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cust_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `address` varchar(300) NOT NULL,
   `email` varchar(100) NOT NULL,
   `phone` int(11) DEFAULT NULL,
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`cust_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

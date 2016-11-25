@@ -5,14 +5,25 @@
  */
 package com.mycompany.banking_webservice.models;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Conor
  */
+@Entity
+@Table
 @XmlRootElement
-public class Customer {
+public class Customer implements Serializable{
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int cust_id;
     private String name,address,email,phone;
 

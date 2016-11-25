@@ -5,40 +5,99 @@
  */
 package com.mycompany.banking_webservice.services;
 
-import com.mycompany.banking_webservice.database.DatabaseManager;
 import com.mycompany.banking_webservice.models.Customer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
  * @author Conor
  */
 public class CustomerService {
-    static ArrayList<Customer> customers = new ArrayList<>();
-    DatabaseManager db;
     
+    // Entity Manager
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
+    private EntityManager em = emf.createEntityManager();
+    private EntityTransaction tx = em.getTransaction();  
+
+    // Constructor
     public CustomerService(){
-        db = new DatabaseManager();
-        if(customers.isEmpty()){    
-            try {
-                customers = (ArrayList<Customer>) db.getAllCustomers();
-            } catch (SQLException | NamingException ex) {}
-        }
     }
     
+    // Get All Customers
+    public List<Customer> getCustomers() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
+        Root<Customer> rootEntry = cq.from(Customer.class);
+        CriteriaQuery<Customer> all = cq.select(rootEntry);
+        TypedQuery<Customer> allQuery = em.createQuery(all);
+        return allQuery.getResultList();
+    }
+    
+    // Get Specific Customer
+    public Customer getCustomer(int id) {
+        Customer c = em.find(Customer.class, id);
+        em.close();
+        return c;
+    }
+    
+    // Add a New or Update a Customer
+    public Customer addCustomer(Customer c) { 
+        Customer test = em.find(Customer.class, c.getCust_id());
+        if (test == null) {
+            tx.begin();
+            em.persist(c);
+            tx.commit();           
+            em.close();
+        }
+
+        return c;
+    }
+    
+    public Customer editCustomer(int id, Customer newC) {
+        Customer c = em.find(Customer.class, id);
+        if (c != null) {
+            tx.begin();
+            c.setName(newC.getName());
+            c.setEmail(newC.getEmail());
+            c.setPhone(newC.getPhone());
+            c.setAddress(newC.getAddress());
+            tx.commit();           
+            em.close();
+        }
+        return c;
+    }
+    
+    // Delete a Customer
+    public void deleteCustomer(int id) {
+        Customer test = em.find(Customer.class, id);
+        if (test !=null) {
+            tx.begin();
+            em.remove(test);
+            tx.commit();
+            em.close();
+        }
+    }
+
+
+   //============================================= //
+   //================= Old Code ================== //
+   //============================================= //
+
+/*
     public List<Customer> getUsers(int id){
         DatabaseManager db = new DatabaseManager();
         List<Customer> customers = new ArrayList<>();
         if(id > -1){
             try {
-                customers = (List<Customer>) db.getCustomer(id);
+                customers.add(db.getCustomer(id));
             } catch (SQLException | NamingException ex) {
                 Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -95,4 +154,6 @@ public class CustomerService {
         
         return c;
     }
+    
+    */
 }
