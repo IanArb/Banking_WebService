@@ -60,10 +60,6 @@ public class PersistenceManager {
         em.remove(o);
     }
     
-//    public Object findObject(Object o, int id) {
-//        return em.find(o.getClass(), id);
-//    }
-    
     public CriteriaBuilder getBuilder() {
         return em.getCriteriaBuilder();
     }
