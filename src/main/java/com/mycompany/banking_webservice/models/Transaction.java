@@ -25,16 +25,16 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private int _id;
     private int amount, post_balance, account_no;
-    private String type_id;
+    private String type;
 
     public Transaction() {
     }
 
-    public Transaction(int amount, int post_balance, int account_no, String type_id) {
+    public Transaction(int amount, int post_balance, int account_no, String type) {
         this.amount = amount;
         this.post_balance = post_balance;
         this.account_no = account_no;
-        this.type_id = type_id;
+        this.type = type;
     }
 
     public int getId() {
@@ -69,12 +69,12 @@ public class Transaction {
         this.account_no = account_no;
     }
 
-    public String getType_id() {
-        return type_id;
+    public String getType() {
+        return type;
     }
 
-    public void setType_id(String type_id) {
-        this.type_id = type_id;
+    public void setType(String type) {
+        this.type = type;
     }
         
     

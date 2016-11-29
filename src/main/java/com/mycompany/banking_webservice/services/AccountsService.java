@@ -21,9 +21,10 @@ import javax.persistence.criteria.Root;
  */
 public class AccountsService {
 
-    PersistenceManager manager = new PersistenceManager();
+    PersistenceManager manager;
 
     public AccountsService() {
+        manager = new PersistenceManager();
     }
 
     public List<Account> getBalances(int cust_id) {
@@ -77,6 +78,8 @@ public class AccountsService {
     
     
     public Transaction withdrawal(int account_no, int amount) {
+                System.out.println("step 3");
+
         Transaction w = transaction(amount, account_no, "withdrawal");
         return w;
     }
@@ -93,9 +96,9 @@ public class AccountsService {
         return transfer;
     }
 
-    public Transaction transaction(int amount, int account_no, String type) {
+    private Transaction transaction(int amount, int account_no, String type) {
+        manager.openEm();
         Account a = getBalance(account_no);
-        
         int currBalance = a.getBalance();
         int newBalance = currBalance;
 
@@ -108,17 +111,18 @@ public class AccountsService {
 
         // Update Account
         a.setBalance(newBalance);
+        manager.openEm();
         updateBalance(a);
-              
+
         // Add Transaction
         Transaction t = new Transaction(amount, newBalance, account_no, type);
-        Transaction test = manager.getEntityManager().find(Transaction.class, account_no);
-        if (test == null) {
-            manager.startTransaction();
-            manager.persist(t);
-            manager.commit();
-            manager.closeTransaction();
-        }
+
+        manager.openEm();
+        manager.startTransaction();
+        manager.persist(t);
+        manager.commit();
+        manager.closeTransaction();
+
         return t;
     }
 

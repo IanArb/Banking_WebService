@@ -30,6 +30,12 @@ public class PersistenceManager {
         tx = em.getTransaction();
     }
     
+    public void openEm(){
+        if(!(em.isOpen())){
+            em = emf.createEntityManager();
+            tx = em.getTransaction();
+        }
+    }
     public EntityManager getEntityManager() {
         return em;
     }

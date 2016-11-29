@@ -88,7 +88,6 @@ public class AccountsResource {
         int amount = obj.get("amount").getAsInt();
         
         List<Transaction> response = new ArrayList<>();
-        
         if(type.equalsIgnoreCase("withdrawal")){
             response.add(accounts.withdrawal(account_no, amount));
         }else if(type.equalsIgnoreCase("lodgement")){
