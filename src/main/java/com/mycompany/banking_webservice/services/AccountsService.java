@@ -69,32 +69,54 @@ public class AccountsService {
     
     public Account getBalance(int acc_no) {
         Account account = manager.getEntityManager().find(Account.class, acc_no);
-        manager.closeTransaction();
+//        manager.closeTransaction();
         return account;
     }
 
-    public void deleteAccount(int cust_id, int account_no) {
-        for (Account x : accounts) {
-            if (x.getCid() == cust_id && x.getAccount_no() == account_no) {
-                accounts.remove(x);
-                break;
-            }
+//    public void deleteAccount(int cust_id, int account_no) {
+//        for (Account x : accounts) {
+//            if (x.getCid() == cust_id && x.getAccount_no() == account_no) {
+//                accounts.remove(x);
+//                break;
+//            }
+//        }
+//    }
+    
+    public void deleteAccount(int account_no) {
+        Account account = manager.getEntityManager().find(Account.class, account_no);
+        if(account != null) {
+            manager.startTransaction();
+            manager.remove(account);
+            manager.commit();
+            manager.closeTransaction();
+            
         }
     }
 
-    public Account addAccount(int cust_id, int sort_code) {
-        // Temp code to add account_no.
-        int high = 0;
-        for (Account x : accounts) {
-            if (x.getAccount_no() > high) {
-                high = x.getAccount_no();
-            }
+//    public Account addAccount(int cust_id, int sort_code) {
+//        // Temp code to add account_no.
+//        int high = 0;
+//        for (Account x : accounts) {
+//            if (x.getAccount_no() > high) {
+//                high = x.getAccount_no();
+//            }
+//        }
+//        int no = high + 1;
+//
+//        Account a = new Account(no, cust_id, 0, sort_code);
+//        accounts.add(a);
+//        return a;
+//    }
+    
+    public Account addAccount(Account account) {
+        Account acc = manager.getEntityManager().find(Account.class, account.getAccount_no());
+        if(acc == null) {
+            manager.startTransaction();
+            manager.persist(account);
+            manager.commit();
+            manager.closeTransaction();
         }
-        int no = high + 1;
-
-        Account a = new Account(no, cust_id, 0, sort_code);
-        accounts.add(a);
-        return a;
+        return account;
     }
 
      public Account updateBalance(Account newA) {
