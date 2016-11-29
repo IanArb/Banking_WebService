@@ -29,18 +29,31 @@ import javax.ws.rs.core.Response;
  * @author Conor
  */
 @Path("/accounts")
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class AccountsResource {
     static AccountsService accounts = new AccountsService();
    
     @GET
     @Path("/balance/{cust_id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Account> getBalance(@PathParam("cust_id") int id, @DefaultValue("-1") @QueryParam("account") int account_no){
-        return accounts.getBalance(id, account_no);
+    public List<Account> getBalance(@PathParam("cust_id") int id){
+        return accounts.getBalances(id);
     }
     
-    @DELETE
-    @Path("/{cust_id}/{account_no}")
+    @GET
+    @Path("/balance/{cust_id}/{acc_no}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Account getBalance(@PathParam("cust_id") int id, @PathParam("acc_no") int acc_no){
+        return accounts.getBalance(acc_no);
+    }
+   
+//    
+//    @DELETE
+//    @Path("/{cust_id}/{account_no}")
+//    public List<Account> getBalance(@PathParam("cust_id") int id, @DefaultValue("-1") @QueryParam("account") int account_no) {
+//        return accounts.getBalance(id, account_no);
+//    }
+    
     public Response deleteAccount(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
        accounts.deleteAccount(id, account_no);      
        return Response.status(Response.Status.NO_CONTENT).build();

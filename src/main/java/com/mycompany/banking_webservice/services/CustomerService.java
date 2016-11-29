@@ -5,6 +5,7 @@
  */
 package com.mycompany.banking_webservice.services;
 
+import com.mycompany.banking_webservice.database.PersistenceManager;
 import com.mycompany.banking_webservice.models.Customer;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,10 +23,12 @@ import javax.persistence.criteria.Root;
  */
 public class CustomerService {
     
-    // Entity Manager
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
-    private EntityManager em = emf.createEntityManager();
-    private EntityTransaction tx = em.getTransaction();  
+//    // Entity Manager
+//    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
+//    private EntityManager em = emf.createEntityManager();
+//    private EntityTransaction tx = em.getTransaction();
+    
+    PersistenceManager manager = new PersistenceManager();
 
     // Constructor
     public CustomerService(){
@@ -33,56 +36,75 @@ public class CustomerService {
     
     // Get All Customers
     public List<Customer> getCustomers() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaBuilder cb = manager.getEntityManager().getCriteriaBuilder();
+        CriteriaBuilder cb = manager.getBuilder();
         CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
         Root<Customer> rootEntry = cq.from(Customer.class);
         CriteriaQuery<Customer> all = cq.select(rootEntry);
-        TypedQuery<Customer> allQuery = em.createQuery(all);
+//        TypedQuery<Customer> allQuery = em.createQuery(all);
+//        TypedQuery<Customer> allQuery = manager.getEntityManager().createQuery(all);
+        TypedQuery<Customer> allQuery = manager.createQuery(cq);
         return allQuery.getResultList();
     }
     
     // Get Specific Customer
     public Customer getCustomer(int id) {
-        Customer c = em.find(Customer.class, id);
-        em.close();
+//        Customer c = em.find(Customer.class, id);
+        Customer c = manager.getEntityManager().find(Customer.class, id);
+//        em.close();
+        manager.closeTransaction();
         return c;
     }
     
     // Add a New or Update a Customer
     public Customer addCustomer(Customer c) { 
-        Customer test = em.find(Customer.class, c.getCust_id());
+//        Customer test = em.find(Customer.class, c.getCust_id());
+        Customer test = manager.getEntityManager().find(Customer.class, c.getCust_id());
         if (test == null) {
-            tx.begin();
-            em.persist(c);
-            tx.commit();           
-            em.close();
+//            tx.begin();
+            manager.startTransaction();
+//            em.persist(c);
+            manager.persist(c);
+//            tx.commit();     
+            manager.commit();
+//            em.close();
+            manager.closeTransaction();
         }
-
         return c;
     }
     
     public Customer editCustomer(int id, Customer newC) {
-        Customer c = em.find(Customer.class, id);
+//        Customer c = em.find(Customer.class, id);
+        Customer c = manager.getEntityManager().find(Customer.class, id);
         if (c != null) {
-            tx.begin();
+//            tx.begin();
+            manager.startTransaction();
             c.setName(newC.getName());
             c.setEmail(newC.getEmail());
             c.setPhone(newC.getPhone());
             c.setAddress(newC.getAddress());
-            tx.commit();           
-            em.close();
+//            tx.commit();  
+            manager.commit();
+//            em.close();
+            manager.closeTransaction();
         }
         return c;
     }
     
     // Delete a Customer
     public void deleteCustomer(int id) {
-        Customer test = em.find(Customer.class, id);
+//        Customer test = em.find(Customer.class, id);
+        Customer test = manager.getEntityManager().find(Customer.class, id);
         if (test !=null) {
-            tx.begin();
-            em.remove(test);
-            tx.commit();
-            em.close();
+//            tx.begin();
+            manager.startTransaction();
+//            em.remove(test);
+            manager.remove(test);
+//            tx.commit();
+            manager.commit();
+//            em.close();
+            manager.closeTransaction();
         }
     }
 
