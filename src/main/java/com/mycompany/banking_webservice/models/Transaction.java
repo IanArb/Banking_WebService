@@ -5,35 +5,44 @@
  */
 package com.mycompany.banking_webservice.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Conor
  */
+@Entity
+@Table
 @XmlRootElement
 public class Transaction {
     
-    private int id, amount, post_amount, account_no;
-    private String type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private int _id;
+    private int amount, post_balance, account_no;
+    private String type_id;
 
     public Transaction() {
     }
 
-    public Transaction(int id, int amount, int post_amount, int account_no, String type) {
-        this.id = id;
+    public Transaction(int amount, int post_balance, int account_no, String type_id) {
         this.amount = amount;
-        this.post_amount = post_amount;
+        this.post_balance = post_balance;
         this.account_no = account_no;
-        this.type = type;
+        this.type_id = type_id;
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int _id) {
+        this._id = _id;
     }
 
     public int getAmount() {
@@ -44,12 +53,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public int getPost_amount() {
-        return post_amount;
+    public int getPost_balance() {
+        return post_balance;
     }
 
-    public void setPost_amount(int post_amount) {
-        this.post_amount = post_amount;
+    public void setPost_balance(int post_balance) {
+        this.post_balance = post_balance;
     }
 
     public int getAccount_no() {
@@ -60,13 +69,13 @@ public class Transaction {
         this.account_no = account_no;
     }
 
-    public String getType() {
-        return type;
+    public String getType_id() {
+        return type_id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType_id(String type_id) {
+        this.type_id = type_id;
     }
-    
+        
     
 }
