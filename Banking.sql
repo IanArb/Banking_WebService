@@ -47,6 +47,7 @@ CREATE TABLE `Account` (
 LOCK TABLES `Account` WRITE;
 /*!40000 ALTER TABLE `Account` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Account` ENABLE KEYS */;
+INSERT INTO `Account` VALUES (1,1,10000,1),(2,1,20000,2),(3,2,15000,1),(4,3,5000,2),(5,4,20000,1);
 UNLOCK TABLES;
 
 --
@@ -70,6 +71,7 @@ CREATE TABLE `Branch` (
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
+INSERT INTO `Branch` VALUES(1,'Dublin'),(2,'Cork');
 UNLOCK TABLES;
 
 --
@@ -108,14 +110,12 @@ DROP TABLE IF EXISTS `Transaction`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Transaction` (
   `_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `account_no` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `post_balance` int(11) NOT NULL,
   PRIMARY KEY (`_id`),
-  KEY `type_id` (`type_id`),
   KEY `account_no` (`account_no`),
-  CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `Transaction_Type` (`_id`),
   CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`account_no`) REFERENCES `Account` (`account_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -129,28 +129,6 @@ LOCK TABLES `Transaction` WRITE;
 /*!40000 ALTER TABLE `Transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `Transaction_Type`
---
-
-DROP TABLE IF EXISTS `Transaction_Type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Transaction_Type` (
-  `_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) NOT NULL,
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Transaction_Type`
---
-
-LOCK TABLES `Transaction_Type` WRITE;
-/*!40000 ALTER TABLE `Transaction_Type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Transaction_Type` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

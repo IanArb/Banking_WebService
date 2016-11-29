@@ -14,48 +14,44 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Conor
  */
 @Path("/accounts")
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes(MediaType.APPLICATION_JSON)
 public class AccountsResource {
-    static AccountsService accounts = new AccountsService();
+    AccountsService accounts = new AccountsService();
    
     @GET
     @Path("/balance/{cust_id}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Account> getBalance(@PathParam("cust_id") int id, @DefaultValue("-1") @QueryParam("account") int account_no){
-        return accounts.getBalance(id, account_no);
+    public List<Account> getBalance(@PathParam("cust_id") int id){
+        return accounts.getBalances(id);
     }
     
+    @GET
+    @Path("/balance/{cust_id}/{acc_no}")
+    public Account getBalance(@PathParam("cust_id") int id, @PathParam("acc_no") int acc_no){
+        return accounts.getBalance(acc_no);
+    } 
+    
     @DELETE
-    @Path("/{cust_id}/{account_no}")
-    public Response deleteAccount(@PathParam("cust_id") int id, @PathParam("account_no") int account_no){
-       accounts.deleteAccount(id, account_no);      
-       return Response.status(Response.Status.NO_CONTENT).build();
+    @Path("/{account_no}")
+    public void deleteAccount(@PathParam("account_no") int id) {
+        accounts.deleteAccount(id);
     }
     
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Account addAccount(String entity) {    
-        JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
-
-        int cust_id = obj.get("cust_id").getAsInt();
-        int sort_code = obj.get("sort_code").getAsInt();
-
-        return accounts.addAccount(cust_id, sort_code);   
+    public Account addAccount(Account account) {
+        return accounts.addAccount(account);
     }
   
           
@@ -69,7 +65,6 @@ public class AccountsResource {
         int amount = obj.get("amount").getAsInt();
         
         List<Transaction> response = new ArrayList<>();
-        
         if(type.equalsIgnoreCase("withdrawal")){
             response.add(accounts.withdrawal(account_no, amount));
         }else if(type.equalsIgnoreCase("lodgement")){
@@ -82,4 +77,5 @@ public class AccountsResource {
         return response;
         
     }      
+
 }

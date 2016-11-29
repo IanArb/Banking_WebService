@@ -5,22 +5,33 @@
  */
 package com.mycompany.banking_webservice.models;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Conor
  */
+@Entity
+@Table
 @XmlRootElement
-public class Account {
-    private int account_no, cid, balance, sort_code;
+public class Account implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private int account_no;
+    private int cid, balance, sort_code;
     
     public Account(){
         this.account_no = -1;
         this.cid = -1;
         this.balance = -1;
         this.sort_code = -1;
-        
     }
     
     public Account(int account_no, int cid, int balance, int sort_code) {
