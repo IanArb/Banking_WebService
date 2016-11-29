@@ -97,6 +97,19 @@ public class AccountsService {
         return a;
     }
 
+     public Account updateBalance(Account newA) {
+        Account a = manager.getEntityManager().find(Account.class, newA.getAccount_no());
+        if (a != null) {
+            manager.startTransaction();
+            a.setBalance(newA.getBalance());
+            manager.commit();
+            manager.closeTransaction();
+        }
+        return a;
+    }
+    
+    
+    
     public Transaction withdrawal(int account_no, int amount) {
         Transaction w = transaction(amount, account_no, "withdrawal");
         return w;
@@ -115,32 +128,31 @@ public class AccountsService {
     }
 
     public Transaction transaction(int amount, int account_no, String type) {
-        Account a = new Account();
-
-        //get all accounts
-        for (Account x : accounts) {
-            if (x.getAccount_no() == account_no) {
-                a = x;
-                accounts.remove(x);
-                break;
-            }
-        }
-
+        Account a = getBalance(account_no);
+        
         int currBalance = a.getBalance();
         int newBalance = currBalance;
 
+        // Calculate New Balance
         if (type.equalsIgnoreCase("withdrawal")) {
             newBalance = currBalance - amount;
         } else if (type.equalsIgnoreCase("lodgement")) {
             newBalance = currBalance + amount;
         }
 
+        // Update Account
         a.setBalance(newBalance);
-        accounts.add(a);
-
-        // tempn setting id to account no
-        int id = account_no;
-        Transaction t = new Transaction(id, amount, newBalance, account_no, type);
+        updateBalance(a);
+              
+        // Add Transaction
+        Transaction t = new Transaction(amount, newBalance, account_no, type);
+        Transaction test = manager.getEntityManager().find(Transaction.class, account_no);
+        if (test == null) {
+            manager.startTransaction();
+            manager.persist(t);
+            manager.commit();
+            manager.closeTransaction();
+        }
         return t;
     }
 }
