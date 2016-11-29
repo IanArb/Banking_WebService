@@ -36,23 +36,17 @@ public class CustomerService {
     
     // Get All Customers
     public List<Customer> getCustomers() {
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaBuilder cb = manager.getEntityManager().getCriteriaBuilder();
         CriteriaBuilder cb = manager.getBuilder();
         CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
         Root<Customer> rootEntry = cq.from(Customer.class);
         CriteriaQuery<Customer> all = cq.select(rootEntry);
-//        TypedQuery<Customer> allQuery = em.createQuery(all);
-//        TypedQuery<Customer> allQuery = manager.getEntityManager().createQuery(all);
         TypedQuery<Customer> allQuery = manager.createQuery(cq);
         return allQuery.getResultList();
     }
     
     // Get Specific Customer
     public Customer getCustomer(int id) {
-//        Customer c = em.find(Customer.class, id);
         Customer c = manager.getEntityManager().find(Customer.class, id);
-//        em.close();
         manager.closeTransaction();
         return c;
     }

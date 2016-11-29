@@ -14,15 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -32,7 +29,7 @@ import javax.ws.rs.core.Response;
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Consumes(MediaType.APPLICATION_JSON)
 public class AccountsResource {
-    static AccountsService accounts = new AccountsService();
+    AccountsService accounts = new AccountsService();
    
     @GET
     @Path("/balance/{cust_id}")
@@ -44,8 +41,7 @@ public class AccountsResource {
     @Path("/balance/{cust_id}/{acc_no}")
     public Account getBalance(@PathParam("cust_id") int id, @PathParam("acc_no") int acc_no){
         return accounts.getBalance(acc_no);
-    }
-   
+    }  
 //    
 //    @DELETE
 //    @Path("/{cust_id}/{account_no}")
@@ -105,4 +101,5 @@ public class AccountsResource {
         return response;
         
     }      
+
 }
