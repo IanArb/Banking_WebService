@@ -18,7 +18,10 @@ import javax.ws.rs.ext.Provider;
  * @author ianarbuckle
  */
 @Provider
-public class APIKeyFilter implements ContainerRequestFilter {
+public class BasicAuthContainerFilter implements ContainerRequestFilter {
+    
+    //Generated key using random UUID
+    private static final String API_KEY = "521197c4-bb29-11e6-a4a6-cec0c932ce01";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -26,7 +29,7 @@ public class APIKeyFilter implements ContainerRequestFilter {
         List<String> apiKeys = headers.get("API_KEY");
         
         
-        if(apiKeys == null || apiKeys.isEmpty() || apiKeys.get(0).equals("VALID_KEY")) {
+        if(apiKeys == null || apiKeys.isEmpty() || apiKeys.get(0).equals(API_KEY)) {
             requestContext
                     .abortWith(Response
                                 .status(Response.Status.UNAUTHORIZED)
@@ -34,5 +37,6 @@ public class APIKeyFilter implements ContainerRequestFilter {
                     .build());
         }
     }
+   
    
 }
