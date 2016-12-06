@@ -25,7 +25,6 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/customers")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class CustomersResource {
     CustomerService users = new CustomerService();
     
@@ -41,11 +40,13 @@ public class CustomersResource {
     }
     
     @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer saveCustomer(Customer c) {
         return users.addCustomer(c);
     }
     
     @PUT
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("/{cust_id}")
     public Customer updateCustomer(@PathParam("cust_id") int id, Customer c) {
         return users.editCustomer(id, c);
