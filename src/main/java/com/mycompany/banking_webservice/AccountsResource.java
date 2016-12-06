@@ -27,7 +27,6 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/accounts")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Consumes(MediaType.APPLICATION_JSON)
 public class AccountsResource {
     AccountsService accounts = new AccountsService();
    
@@ -50,6 +49,7 @@ public class AccountsResource {
     }
     
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     public Account addAccount(Account account) {
         return accounts.addAccount(account);
     }
@@ -58,7 +58,6 @@ public class AccountsResource {
     @POST
     @Path("/{type}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Transaction> transaction(String entity, @PathParam("type") String type) {    
         JsonObject obj = new Gson().fromJson(entity, JsonObject.class);
         int account_no = obj.get("account_no").getAsInt();

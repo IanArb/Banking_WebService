@@ -24,17 +24,16 @@ import javax.ws.rs.core.MediaType;
  */
 
 @Path("/customers")
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class CustomersResource {
     CustomerService users = new CustomerService();
     
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Customer> getCustomer(){
           return users.getCustomers();
     }
     
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("/{cust_id}")
     public Customer getCustomer(@PathParam("cust_id") int id) {
         return users.getCustomer(id);
@@ -42,22 +41,19 @@ public class CustomersResource {
     
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer saveCustomer(Customer c) {
         return users.addCustomer(c);
     }
     
     @PUT
-    @Path("/{cust_id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("/{cust_id}")
     public Customer updateCustomer(@PathParam("cust_id") int id, Customer c) {
         return users.editCustomer(id, c);
     }
     
     @DELETE
     @Path("/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void removeCustomer(@PathParam("id") int id) {
         users.deleteCustomer(id);
     }
