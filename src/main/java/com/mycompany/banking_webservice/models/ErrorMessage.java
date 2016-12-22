@@ -40,8 +40,6 @@ public class ErrorMessage {
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
-    }
-    
-    
+    } 
     
 }

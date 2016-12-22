@@ -6,6 +6,7 @@
 package com.mycompany.banking_webservice.models;
 
 import java.io.Serializable;
+import java.util.Random;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,11 +28,14 @@ public class Account implements Serializable {
     private int account_no;
     private int cid, balance, sort_code;
     
+    Random random = new Random();
+    int min = 1, max = 3;
+    
     public Account(){
         this.account_no = -1;
         this.cid = -1;
         this.balance = -1;
-        this.sort_code = -1;
+        this.sort_code = min + random.nextInt(max - min) + 1;
     }
     
     public Account(int account_no, int cid, int balance, int sort_code) {
