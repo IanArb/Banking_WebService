@@ -23,7 +23,7 @@ public class Transaction {
     
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private int _id;
+    private int _id; 
     private int amount, post_balance, account_no;
     private String type;
 

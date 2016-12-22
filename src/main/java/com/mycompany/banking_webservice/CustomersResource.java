@@ -29,7 +29,7 @@ public class CustomersResource {
     CustomerService users = new CustomerService();
     
     @GET
-    public List<Customer> getCustomer(){
+    public List<Customer> getCustomer() {
           return users.getCustomers();
     }
     
