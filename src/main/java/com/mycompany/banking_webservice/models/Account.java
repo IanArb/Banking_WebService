@@ -32,9 +32,9 @@ public class Account implements Serializable {
     int min = 1, max = 3;
     
     public Account(){
-        this.account_no = 0;
-        this.cid = 0;
-        this.balance = 0;
+        this.account_no = -1;
+        this.cid = -1;
+        this.balance = -1;
         this.sort_code = min + random.nextInt(max - min) + 1;
     }
     
