@@ -87,7 +87,7 @@ Pre-Conditions: Transaction must have been made on the account.
 </br>
 Post-Conditions: The data is return in JSON format with status code 200
 
-#POST Requests
+###POST Requests
 
 API Name: Customer Resource
 </br>
@@ -153,7 +153,7 @@ Pre-Conditions: Both accounts must exist and the account must hold the efficient
 </br>
 Post-Conditions: A withdrawal has been made from one account and a lodgement to another. The details and status 201 is returned.
 
-#DELETE Request
+###DELETE Request
 
 API Name: Customer Resource
 </br>
@@ -187,7 +187,7 @@ Pre-Conditions: The customer’s account must exist.
 </br>
 Post-Conditions: The customer’s account is deleted from the system. The status 204 is returned.
 
-#PUT Request
+###PUT Request
 
 API Name: Customer Resource
 </br>
