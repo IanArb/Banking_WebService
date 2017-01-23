@@ -5,23 +5,23 @@ In order to solve the online banking web service problem we will be implementing
 The banking service will be broken down in the following components:
 
 
-•	Resources
+##Resources
 - These resources, namely Customer and Account, is the public API for the system. These resources will make the relevant requests to the services classes when they receive a request.
-•	Services
+Services
 - This is where our logic resides and all of the management of the banking data.
 - It Provides any functions that need to be performed on the data and also sends and receives information from our persistence classes.
-•	Security
+Security
 - Manages the security of the system, in particular the API Key.
-•	Database
+Database
 - Manages the persistence of data and the CRUD functionality to our database, using the JPA.
-•	Models
+Models
 - These are POJOs of objects such as Customer, Account and Transaction.
 
-#Security
+##Security
 
 The online banking web service will require security across the entire API and we have proposed to solve the security concern by implementing the following:
 
-•	API Key filter 
+API Key filter 
 - Implement API key filter using Jersey’s ContainerFilterRequest object
 - You must enter API key in the header to be authorised to make a request. 
 
@@ -31,13 +31,13 @@ POSTMAN – Set the header properties as following:
 Key – API_KEY 
 Value –API_KEY: 521197c4-bb29-11e6-a4a6-cec0c932ce01
 
-#Notes on Running Banking System
+##Notes on Running Banking System
 When the running on NetBeans if the server is running and you run the client application, NetBeans restarts the server. This may cause errors in the client as it will receive 404 response codes from the server. To avoid this issue, wait until the server is finished restarting before sending requests via the client. This restart takes approx. 60 seconds.
 
-#Restful API
+##Restful API
 All URIs begin with: /api/*
 
-#GET Requests
+###GET Requests
 
 API Name:  Customers Resource
 Description:  This allows the retrieval all customer details.
