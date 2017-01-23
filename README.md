@@ -40,7 +40,7 @@ All URIs begin with: /api/*
 ###GET Requests
 
 API Name:  Customers Resource
---
+</br>
 Description:  This allows the retrieval all customer details.
 --
 URI:   /customers/{cust_id}
