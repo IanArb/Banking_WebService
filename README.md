@@ -42,87 +42,149 @@ All URIs begin with: /api/*
 API Name:  Customers Resource
 --
 Description:  This allows the retrieval all customer details.
+--
 URI:   /customers/{cust_id}
+--
 HTTP verb:  GET
+--
 Parameters: cust_id (Integer, optional, URL param)
+--
 Resource contents: Returns details (customer id, name, address, email, phone) for all or specified customer
+--
 Pre-Conditions: Customer table must be populated, specified customer must exist.
+--
 Post-Conditions: The data is return in JSON format with status code 200
 
 API Name:   Balance Resource
+--
 Description:  This allows the retrieval of the balance in a customer’s account.
+--
 URI:  account /balance/{cust_id}
+--
 HTTP verb:  GET
+--
 Parameters: cust_id (Integer, URL param, required), account (Integer, optional)
+--
 Resource contents: Returns balance for all, or specific, accounts that a customer holds.
+--
 Pre-Conditions: Customer must hold one or more accounts.
+--
 Post-Conditions: The data is return in JSON format with status code 200
 
 API Name: Transaction Resource
+--
 Description:  This allows the retrieval of the transaction on customer accounts.
+--
 URI:   /transactions/{cust_id}
+--
 HTTP verb:  GET
+--
 Parameters: cust_id (Integer, URL param, required), account (Integer, URL param, optional)
+--
 Resource contents: Returns transactions on all, or specific, accounts that a customer holds.
+--
 Pre-Conditions: Transaction must have been made on the account.
+--
 Post-Conditions: The data is return in JSON format with status code 200
 
 #POST Requests
 
 API Name: Customer Resource
+--
 Description:  This allows the addition of a new customer into the system.
+--
 URI:   /customers
+--
 HTTP verb:  POST
+--
 Parameters: name, address, email, phone (JSON, required)	
+--
 Resource contents: The details of the newly added customer.
+--
 Pre-Conditions: The customer must not already exist in the system.
+--
 Post-Conditions: A new customer is added to the system. The details and status 201 is returned.
 
 API Name: Transaction Resource
+--
 Description:  This allows withdrawals or lodgements to be made on an account.
+--
 URI:   accounts/{transactions_type}
+--
 HTTP verb:  POST
+--
 Parameters: cust_id, account_no, amount (JSON, required), account_no_to, cust_id_to, (JSON, only if transfer)	
+--
 Resource contents: The details of the transaction.
+--
 Pre-Conditions: The customer holds an account. The account must hold efficient funds.
+--
 Post-Conditions: A transaction has been made, either withdrawal, lodgement or transfer. The details and status 201 is returned.
 
 API Name: Account Resource
+--
 Description:  This allows an account to be made.
+--
 URI:   /accounts
+--
 HTTP verb:  POST
+--
 Parameters: cust_id (JSON, required)	
+--
 Resource contents: The details of the customer and branch.
+--
 Pre-Conditions: The customer must exist.
+--
 Post-Conditions: An account has been made under a customer name. The details and status 201 is returned.
 
 API Name: Transfer Resource
+--
 Description:  This allows a transfer to be made between accounts.
+--
 URI:   accounts/transfers
+--
 HTTP verb:  POST
+--
 Parameters: cust_id, account_no, account_no_to, cust_id_to, amount (JSON, required)	
+--
 Resource contents: The details of the transaction.
+--
 Pre-Conditions: Both accounts must exist and the account must hold the efficient funds.
+--
 Post-Conditions: A withdrawal has been made from one account and a lodgement to another. The details and status 201 is returned.
 
 #DELETE Request
 
 API Name: Customer Resource
+--
 Description:  This allows a customer to be deleted.
+--
 URI:   /customers/{cust_id}
+--
 HTTP verb:  DELETE
+--
 Parameters: cust_id (URL param, required)	
+--
 Resource contents: The customer details.
+--
 Pre-Conditions: The customer must exist.
+--
 Post-Conditions: The customer is deleted from the system. The status 204 is returned.
 
 API Name: Account Resource
+--
 Description:  This allows a customer’s account to be deleted.
+--
 URI:   /accounts/{account_no}
+--
 HTTP verb:  DELETE
+--
 Parameters: account_no (URL Param, required)	
+--
 Resource contents: The account details.
+--
 Pre-Conditions: The customer’s account must exist.
+--
 Post-Conditions: The customer’s account is deleted from the system. The status 204 is returned.
 
 #PUT Request
