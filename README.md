@@ -6,24 +6,24 @@ The banking service will be broken down in the following components:
 
 
 •	Resources
-o	These resources, namely Customer and Account, is the public API for the system. These resources will make the relevant requests to the services classes when they receive a request.
+- These resources, namely Customer and Account, is the public API for the system. These resources will make the relevant requests to the services classes when they receive a request.
 •	Services
-o	This is where our logic resides and all of the management of the banking data.
-o	 It Provides any functions that need to be performed on the data and also sends and receives information from our persistence classes.
+- This is where our logic resides and all of the management of the banking data.
+- It Provides any functions that need to be performed on the data and also sends and receives information from our persistence classes.
 •	Security
-o	Manages the security of the system, in particular the API Key.
+- Manages the security of the system, in particular the API Key.
 •	Database
-o	Manages the persistence of data and the CRUD functionality to our database, using the JPA.
+- Manages the persistence of data and the CRUD functionality to our database, using the JPA.
 •	Models
-o	These are POJOs of objects such as Customer, Account and Transaction.
+- These are POJOs of objects such as Customer, Account and Transaction.
 
 #Security
 
 The online banking web service will require security across the entire API and we have proposed to solve the security concern by implementing the following:
 
 •	API Key filter 
-o	Implement API key filter using Jersey’s ContainerFilterRequest object
-o	You must enter API key in the header to be authorised to make a request. 
+- Implement API key filter using Jersey’s ContainerFilterRequest object
+- You must enter API key in the header to be authorised to make a request. 
 
 Example in CURL - curl -vi -X GET http://localhost:49000/api/customers -H ’API_KEY: 521197c4-bb29-11e6-a4a6-cec0c932ce01
 
@@ -103,8 +103,6 @@ Parameters: cust_id, account_no, account_no_to, cust_id_to, amount (JSON, requir
 Resource contents: The details of the transaction.
 Pre-Conditions: Both accounts must exist and the account must hold the efficient funds.
 Post-Conditions: A withdrawal has been made from one account and a lodgement to another. The details and status 201 is returned.
-
-
 
 #DELETE Request
 
