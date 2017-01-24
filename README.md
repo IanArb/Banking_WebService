@@ -1,8 +1,10 @@
 #Introduction
 
-In order to solve the online banking web service problem we will be implementing a RESTful API using the JAR-XS and Jersey framework. Our proposed solution to the problem domain will be to use the MVC design pattern.
+This project was implemeneted as part of our Web Services and API Development module. 
 
-The banking service will be broken down in the following components:
+In order to solve the online banking web service domain problem we implemented a RESTful API using the JAR-XS and Jersey framework. Our proposed solution to the problem domain was to use the MVC design pattern for separation of concerns.
+
+The banking service is broken down in the following components:
 
 
 ##Resources
@@ -19,7 +21,7 @@ Models
 
 ##Security
 
-The online banking web service will require security across the entire API and we have proposed to solve the security concern by implementing the following:
+The online banking web service will require security across the entire API and we have proposed to solve the security concern by implementing a simple API key filter.
 
 API Key filter 
 - Implement API key filter using Jersey’s ContainerFilterRequest object
@@ -29,7 +31,7 @@ Example in CURL - curl -vi -X GET http://localhost:49000/api/customers -H ’API
 
 POSTMAN – Set the header properties as following:
 Key – API_KEY 
-Value –API_KEY: 521197c4-bb29-11e6-a4a6-cec0c932ce01
+Value – API_KEY: 521197c4-bb29-11e6-a4a6-cec0c932ce01
 
 ##Notes on Running Banking System
 When the running on NetBeans if the server is running and you run the client application, NetBeans restarts the server. This may cause errors in the client as it will receive 404 response codes from the server. To avoid this issue, wait until the server is finished restarting before sending requests via the client. This restart takes approx. 60 seconds.
