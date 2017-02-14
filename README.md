@@ -9,14 +9,14 @@ The banking service is broken down in the following components:
 
 ##Resources
 - These resources, namely Customer and Account, is the public API for the system. These resources will make the relevant requests to the services classes when they receive a request.
-###Services
+##Services
 - This is where our logic resides and all of the management of the banking data.
 - It Provides any functions that need to be performed on the data and also sends and receives information from our persistence classes.
-###Security
+##Security
 - Manages the security of the system, in particular the API Key.
-###Database
+##Database
 - Manages the persistence of data and the CRUD functionality to our database, using the JPA.
-###Models
+##Models
 - These are POJOs of objects such as Customer, Account and Transaction.
 
 ##Security
